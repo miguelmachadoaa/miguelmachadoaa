@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miguel Machado - Full Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e1a;
+            --bg-card: #141825;
+            --bg-hover: #1a1f30;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --accent-cyan: #00d9ff;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ff6b35;
+            --accent-green: #10b981;
+            --gradient-1: linear-gradient(135deg, #00d9ff 0%, #8b5cf6 100%);
+            --gradient-2: linear-gradient(135deg, #ff6b35 0%, #8b5cf6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(0, -100px) rotate(180deg); }
+            75% { transform: translate(-50px, -50px) rotate(270deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 14, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content .subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-content .description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.1);
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 217, 255, 0.15);
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #1a1f30 0%, #0a0e1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .project-card:hover .project-image::before {
+            left: 100%;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-type {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-badge {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: gap 0.3s;
+        }
+
+        .project-link:hover {
+            gap: 1rem;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-1);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 2rem;
+            width: 15px;
+            height: 15px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            border: 3px solid var(--bg-dark);
+            box-shadow: 0 0 0 3px var(--accent-cyan);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .timeline-date {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .timeline-company {
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .education-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-card::before {
+            content: '🎓';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            opacity: 0.05;
+        }
+
+        .education-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .education-level {
+            color: var(--accent-purple);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .education-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .education-institution {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.15);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .contact-card p {
+            color: var(--accent-cyan);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 0 5%;
+                min-height: 90vh;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            section {
+                padding: 5rem 5%;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-item::before {
+                left: -2.5rem;
+            }
+
+            .projects-grid,
+            .skills-grid,
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="logo">MM</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#sobre-mi">Sobre Mí</a></li>
+            <li><a href="#habilidades">Habilidades</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#experiencia">Experiencia</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Miguel Machado</h1>
+            <p class="subtitle">Full Stack Developer & Systems Engineer</p>
+            <p class="description">
+                Ingeniero en Sistemas con más de 10 años de experiencia desarrollando soluciones web innovadoras. 
+                Especializado en Laravel, Vue.js, Angular y arquitecturas escalables.
+            </p>
+            <div class="cta-buttons">
+                <a href="#proyectos" class="btn btn-primary">Ver Proyectos</a>
+                <a href="#contacto" class="btn btn-secondary">Contactar</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi">
+        <h2 class="section-title">Sobre Mí</h2>
+        <p class="section-subtitle">Construyendo el futuro digital, una línea de código a la vez</p>
+        <div class="skills-grid">
+            <div class="skill-card fade-in">
+                <div class="skill-icon">💻</div>
+                <h3>Desarrollo Full Stack</h3>
+                <p style="color: var(--text-secondary); margin: 1rem 0;">
+                    Experiencia completa en desarrollo backend y frontend, desde bases de datos hasta interfaces de usuario.
+                </p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Laravel</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Angular</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🎨</div>
+                <h3>Diseño de Interfaces</h3>
+                <p style="color: var(--text-secondary); margin: 1rem 0;">
+                    Creación de experiencias de usuario intuitivas y atractivas con las últimas tecnologías frontend.
+                </p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Bootstrap</span>
+                    <span class="skill-tag">Tailwind</span>
+                    <span class="skill-tag">CSS3</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🗄️</div>
+                <h3>Gestión de Datos</h3>
+                <p style="color: var(--text-secondary); margin: 1rem 0;">
+                    Diseño e implementación de bases de datos eficientes y optimizadas para alto rendimiento.
+                </p>
+                <div class="skill-tags">
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">MongoDB</span>
+                    <span class="skill-tag">Redis</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🚀</div>
+                <h3>DevOps & Cloud</h3>
+                <p style="color: var(--text-secondary); margin: 1rem 0;">
+                    Implementación y gestión de aplicaciones en servicios cloud con mejores prácticas de deployment.
+                </p>
+                <div class="skill-tags">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">Linux</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades">
+        <h2 class="section-title">Stack Tecnológico</h2>
+        <p class="section-subtitle">Herramientas y tecnologías con las que trabajo</p>
+        <div class="skills-grid">
+            <div class="skill-card fade-in">
+                <h3>Backend Development</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">PHP</span>
+                    <span class="skill-tag">Laravel</span>
+                    <span class="skill-tag">Zend Framework</span>
+                    <span class="skill-tag">REST APIs</span>
+                    <span class="skill-tag">Node.js</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <h3>Frontend Development</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">jQuery</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Angular</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">CSS3</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <h3>Frameworks CSS</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Bootstrap</span>
+                    <span class="skill-tag">Tailwind CSS</span>
+                    <span class="skill-tag">Materialize</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <h3>Bases de Datos</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">MongoDB</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <h3>CMS & E-Commerce</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">WordPress</span>
+                    <span class="skill-tag">PrestaShop</span>
+                    <span class="skill-tag">WooCommerce</span>
+                </div>
+            </div>
+            <div class="skill-card fade-in">
+                <h3>DevOps & Cloud</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">Linux Servers</span>
+                    <span class="skill-tag">cPanel</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Docker</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proyectos">
+        <h2 class="section-title">Proyectos Destacados</h2>
+        <p class="section-subtitle">Soluciones web que transforman negocios</p>
+        <div class="projects-grid">
+            <div class="project-card fade-in">
+                <div class="project-image">🏭</div>
+                <div class="project-content">
+                    <span class="project-type">E-Commerce Industrial</span>
+                    <h3>Agroindustrial Valencia</h3>
+                    <p class="project-description">
+                        Tienda en línea especializada en productos hidráulicos y neumáticos con más de 45 años de experiencia. Sistema completo de catálogo de productos con categorización avanzada.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+                    </div>
+                    <a href="https://agroindustrialvalencia.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">✈️</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema de Reservas</span>
+                    <h3>Conkhep</h3>
+                    <p class="project-description">
+                        Plataforma completa para gestión de reservas de hoteles, destinos turísticos y paquetes vacacionales. Sistema con múltiples roles de usuario y pasarelas de pago.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <a href="https://conkhep.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🏘️</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema de Gestión</span>
+                    <h3>JADSCorp</h3>
+                    <p class="project-description">
+                        Sistema integral de administración de condominios que incluye gestión de inquilinos, facturación, recibos de pago, estados de cuenta y área de cliente con notificaciones.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <a href="https://jadscorp.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🏠</div>
+                <div class="project-content">
+                    <span class="project-type">Portal Inmobiliario</span>
+                    <h3>PGM Bienes Raíces</h3>
+                    <p class="project-description">
+                        Sistema completo de gestión inmobiliaria con funcionalidades para compra, venta y arrendamiento. Incluye sistema de plantillas, gestión de subdominios y servidor de imágenes en AWS.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel 8</span>
+                        <span class="tech-badge">Vue 3</span>
+                        <span class="tech-badge">AWS</span>
+                        <span class="tech-badge">cPanel API</span>
+                    </div>
+                    <a href="https://pgmbienesraices.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🪟</div>
+                <div class="project-content">
+                    <span class="project-type">Catálogo en Línea</span>
+                    <h3>DecoHouse 3000</h3>
+                    <p class="project-description">
+                        Catálogo digital de persianas enrollables y soluciones decorativas con 25 años de experiencia. Sistema de blog integrado y formularios de contacto.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+                    </div>
+                    <a href="https://decohouse3000.com.ve/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">💰</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema de Ventas por Cuotas</span>
+                    <h3>Mood de Venezuela</h3>
+                    <p class="project-description">
+                        Plataforma de ventas por cuotas sin intereses bancarios. Sistema de gestión de clientes, productos y planes de financiamiento hasta 18 meses.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">WhatsApp API</span>
+                    </div>
+                    <a href="https://mood.com.ve" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🛒</div>
+                <div class="project-content">
+                    <span class="project-type">E-Commerce</span>
+                    <h3>Alpina Colombia</h3>
+                    <p class="project-description">
+                        Tienda en línea para Alpina, una de las marcas lácteas más importantes de Colombia. Sistema de e-commerce completo con carrito de compras y pasarela de pagos.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Angular</span>
+                        <span class="tech-badge">MercadoPago</span>
+                    </div>
+                    <a href="https://alpina.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🔧</div>
+                <div class="project-content">
+                    <span class="project-type">E-Commerce Industrial</span>
+                    <h3>CD Solec</h3>
+                    <p class="project-description">
+                        Tienda en línea especializada en componentes eléctricos para uso industrial y comercial. Sistema de catálogo con búsqueda avanzada y filtros.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <a href="https://www.cd-solec.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🏗️</div>
+                <div class="project-content">
+                    <span class="project-type">E-Commerce Ferretería</span>
+                    <h3>Helbert y Cía</h3>
+                    <p class="project-description">
+                        Tienda en línea completa para ferretería con sistema de inventario, carrito de compras y múltiples métodos de pago integrados.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+                    </div>
+                    <a href="https://www.helbertycia.com/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">☎️</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema Call Center</span>
+                    <h3>Fenix Corp</h3>
+                    <p class="project-description">
+                        Sistema de call center para la gestión de casos bancarios. Incluye ticketing, seguimiento de casos y reportes en tiempo real.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">WebSockets</span>
+                    </div>
+                    <a href="https://fenixcorp.gt/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🦷</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema Médico</span>
+                    <h3>AMI Dentos</h3>
+                    <p class="project-description">
+                        Sistema de gestión odontológica completo con historias clínicas, citas, facturación y seguimiento de tratamientos.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <a href="https://ami.dentos.co/auth/login" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">⚰️</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema de Gestión</span>
+                    <h3>GF Neo</h3>
+                    <p class="project-description">
+                        Sistema de gestión funeraria con administración de servicios, contratos, pagos y seguimiento de casos.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">Bootstrap</span>
+                    </div>
+                    <a href="https://gf.neo.fo/login" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">🤖</div>
+                <div class="project-content">
+                    <span class="project-type">IA & Machine Learning</span>
+                    <h3>Archivo Inteligente</h3>
+                    <p class="project-description">
+                        Aplicación para análisis de archivos con inteligencia artificial. Procesamiento de documentos, extracción de datos y análisis automático.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">TensorFlow</span>
+                    </div>
+                    <a href="https://archivointeligente.com/inicio" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">💻</div>
+                <div class="project-content">
+                    <span class="project-type">Sistema de Soporte</span>
+                    <h3>Shomi</h3>
+                    <p class="project-description">
+                        Sistema de atención al cliente para servicios técnicos de computadoras y laptops. Gestión de tickets, inventario y seguimiento de reparaciones.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <a href="https://shomi.com.ve/app/" target="_blank" class="project-link">
+                        Ver Proyecto →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experiencia">
+        <h2 class="section-title">Experiencia Profesional</h2>
+        <p class="section-subtitle">Más de 10 años construyendo soluciones digitales</p>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">4 Años</span>
+                <h3>Analista Programador</h3>
+                <p class="timeline-company">Crearemos Agencia Web</p>
+                <p class="timeline-description">
+                    Desarrollo de aplicaciones bajo demanda para clientes utilizando Laravel, Angular, MySQL, jQuery y REST APIs. 
+                    Proyectos destacados: Alpinago.com (Tienda con Mercadopago), Bikexperts.com, Xhopypos (Sistema POS), 
+                    Yoloscuido.com (Suscripciones PayPal), Auteco.com (E-learning), Helbert y Cia (E-Commerce).
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">12 Meses</span>
+                <h3>Programador Semi Senior</h3>
+                <p class="timeline-company">Albatros Airlines (Alianza Glacelot C.A.)</p>
+                <p class="timeline-description">
+                    Desarrollo de intranet para automatización de procesos (recibos de pago, solicitudes de permisos, vacaciones, viáticos). 
+                    Mantenimiento de servidor web, gestión de correo corporativo y soporte técnico.
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">1 Año y 6 Meses</span>
+                <h3>Analista de Sistemas</h3>
+                <p class="timeline-company">Abakusit Agencia Web</p>
+                <p class="timeline-description">
+                    Análisis, desarrollo e implementación de sistemas con Zend Framework, jQuery y Bootstrap. 
+                    Proyectos: 180shop (sincronización Saifpro-Prestashop), Chronikapp (gestión redes sociales), 
+                    Venefilter (tienda con 100,000+ productos).
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">18 Meses</span>
+                <h3>Desarrollador</h3>
+                <p class="timeline-company">Heureka Agencia Web</p>
+                <p class="timeline-description">
+                    Desarrollo de soluciones web con Zend Framework, jQuery y Bootstrap. Manejo de CMS WordPress y Prestashop. 
+                    Proyectos: SeguridadHK (entorno de seguridad), App Cencamon (gestión de cursos), HKSocial (gestión Twitter).
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">4 Meses</span>
+                <h3>Analista Programador</h3>
+                <p class="timeline-company">KR Red Inmobiliaria</p>
+                <p class="timeline-description">
+                    Desarrollo de aplicación inmobiliaria con Laravel 8 y Vue 3. Integración API cPanel, servidor de imágenes y montaje en AWS.
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">1 Año</span>
+                <h3>Programador</h3>
+                <p class="timeline-company">JADSCorp</p>
+                <p class="timeline-description">
+                    Desarrollo de sistema administrativo para condominios con Laravel y Vue. Gestión de inquilinos, facturación, 
+                    recibos de pago y área de cliente.
+                </p>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <span class="timeline-date">6 Meses</span>
+                <h3>Programador</h3>
+                <p class="timeline-company">DKSoftware</p>
+                <p class="timeline-description">
+                    Desarrollo de aplicación para creación de fórmulas de embutidos con Laravel, jQuery y MySQL. 
+                    Gestión de usuarios, elementos, fórmulas y reportes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="educacion">
+        <h2 class="section-title">Formación Académica</h2>
+        <p class="section-subtitle">Fundamentos sólidos para la innovación tecnológica</p>
+        <div class="education-grid">
+            <div class="education-card fade-in">
+                <span class="education-level">Universitaria</span>
+                <h3>Ingeniero en Sistemas</h3>
+                <p class="education-institution">I.U.P. Santiago Mariño</p>
+            </div>
+            <div class="education-card fade-in">
+                <span class="education-level">Técnica</span>
+                <h3>Técnico Medio en Control de Calidad</h3>
+                <p class="education-institution">IUTEPAL Maracay</p>
+            </div>
+            <div class="education-card fade-in">
+                <span class="education-level">Secundaria</span>
+                <h3>Bachiller en Ciencias</h3>
+                <p class="education-institution">U.P Las Américas, Maracay</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <h2 class="section-title">Trabajemos Juntos</h2>
+        <p class="section-subtitle">¿Tienes un proyecto en mente? Hablemos</p>
+        <div class="contact-grid">
+            <a href="/cdn-cgi/l/email-protection#6c01050b190900010d0f040d08030d0d2c0b010d0500420f0301" class="contact-card fade-in">
+                <div class="contact-icon">📧</div>
+                <h3>Email</h3>
+                <p><span class="__cf_email__" data-cfemail="c3aeaaa4b6a6afaea2a0aba2a7aca2a283a4aea2aaafeda0acae">[email&#160;protected]</span></p>
+            </a>
+            <a href="tel:+584243101775" class="contact-card fade-in">
+                <div class="contact-icon">📱</div>
+                <h3>Teléfono</h3>
+                <p>+58 424-310-1775</p>
+            </a>
+            <a href="https://wa.me/584243101775" target="_blank" class="contact-card fade-in">
+                <div class="contact-icon">💬</div>
+                <h3>WhatsApp</h3>
+                <p>Chat directo</p>
+            </a>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">📍</div>
+                <h3>Ubicación</h3>
+                <p>Maracay, Edo. Aragua, Venezuela</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Miguel Machado. Todos los derechos reservados.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Diseñado y desarrollado con 💙</p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active nav link
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forE
